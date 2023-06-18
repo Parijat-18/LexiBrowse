@@ -1,0 +1,8 @@
+{
+    "input_dir": "resources\\pdf_files",
+    "chunk_size": 1000,
+    "chunk_overlap": 100,
+    "persist_dir": "resources\\db",
+    "embedding_model": "text-embedding-ada-002",
+    "model": "gpt-3.5-turbo"
+}
