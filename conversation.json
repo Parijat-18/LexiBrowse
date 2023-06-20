@@ -1,0 +1,10 @@
+[
+    {
+        "user": "What is GPT4?",
+        "lexi": "GPT-4 is a large multimodal model capable of processing image and text inputs and producing text outputs. It is an important area of study as it has the potential to be used in a wide range of applications, such as dialogue systems, text summarization, and machine translation. GPT-4 demonstrates increased performance in areas such as reasoning, knowledge retention, and coding, compared to earlier models such as GPT-2 and GPT-3. However, it also presents new safety challenges such as hallucinations, harmful content, disinformation and influence operations, and potential for risky emergent behaviors. The model was evaluated on a variety of exams originally designed for humans and often outscored the vast majority of human test takers."
+    },
+    {
+        "user": "How can the safety challenges be solved by using reinforcement learning?",
+        "lexi": "Reinforcement learning can be used to address safety challenges in GPT-4 by fine-tuning the model's behavior using reinforcement learning with human feedback (RLHF) to produce responses better aligned with the user's intent. However, after RLHF, the models can still be brittle on unsafe inputs as well as sometimes exhibit undesired behaviors on both safe and unsafe inputs. To steer the models towards appropriate behavior at a more fine-grained level, the approach to safety consists of two main components, an additional set of safety-relevant RLHF training prompts, and rule-based reward models (RBRMs). The RBRMs are a set of zero-shot GPT-4 classifiers that provide an additional reward signal to the GPT-4 policy model during RLHF fine-tuning that targets semi-recurrent reinforcement learning problem."
+    }
+]

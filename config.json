@@ -1,5 +1,6 @@
 {
     "input_dir": "resources\\pdf_files",
+    "pdf_links": "",
     "chunk_size": 1000,
     "chunk_overlap": 100,
     "persist_dir": "resources\\db",

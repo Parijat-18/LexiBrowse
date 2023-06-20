@@ -6,6 +6,11 @@ from langchain.memory import ConversationBufferMemory
 from langchain import PromptTemplate
 import json
 import os
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
+# parser.add_argument('--chunk_overlap' , type=int, default=config.get('chunk_overlap', 100), help='The overlap of the chunks to be used for the embedding')
 
 if __name__ == "__main__":
 
@@ -40,7 +45,8 @@ if __name__ == "__main__":
         input_variables=["history", "context", "question"],
         template=template,
     )
-
+    args = parser.parse_args()
+    conversation_rec = []
     embedding = OpenAIEmbeddings(model=config['embedding_model'])
     openai = ChatOpenAI(temperature=0 , model=config['model'])
     vecDB = Chroma(persist_directory=config['persist_dir'] , embedding_function=embedding)
@@ -60,6 +66,12 @@ if __name__ == "__main__":
         query = input('Enter your query: ')
         if query != '/exit':
             llm_response = query_chain(query)
+            if args.save:
+                conversation = {
+                    "user":query,
+                    "lexi":llm_response['result']
+                }
+                conversation_rec.append(conversation)
             print('\033[92m' + "Lexi: " + '\033[0m' , llm_response['result'])
             print('sources: ')
             for source in llm_response['source_documents']:
@@ -67,4 +79,7 @@ if __name__ == "__main__":
         else:
             break
     
+    if args.save:
+        with open('conversation.json', 'w') as f:
+            json.dump(conversation_rec, f , indent=4)
 
