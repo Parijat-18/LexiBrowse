@@ -61,9 +61,12 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
 
 5. **Generate and Store Embeddings**: 
 
-   Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options.
+   Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options. For using web URLs, just use the `--pdf_links` and paste the urls.
+   ```
+   python setup.py --pdf_links url1 url2
+   ```
 
-6. **Start the Chat Interface**: 
+7. **Start the Chat Interface**: 
 
    Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses.
 
