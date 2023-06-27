@@ -3,11 +3,15 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
+import speech_recognition as sr
+from speechToText import captureAudio
 from langchain import PromptTemplate
 from dotenv import load_dotenv
 from textToSpeech import Speech
 import json
 import os
+import msvcrt
+import time
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -15,6 +19,13 @@ parser.add_argument('--save', type=bool, default=True, help='Saves the entire co
 parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
 
 if __name__ == "__main__":
+
+    def captureAudioThread(q):
+        r = sr.Recognizer()
+        while True:
+            query = captureAudio(r)
+            if query is not None:
+                q.put(query)
 
     if os.path.exists('config.json'):
         with open('config.json', 'r') as f:
@@ -64,9 +75,26 @@ if __name__ == "__main__":
                                                       input_key="question")
                                               }
                                         )
+    r = sr.Recognizer()
+
     print('\033[92m' + "Greetings! Welcome to LexiBrowse. I am your AI-powered companion for swift and precise document exploration." + '\033[0m')
+
+    typed_query = None
+    spoken_query = None
+
     while True:
-        query = input('Enter your query: ')
+        if msvcrt.kbhit():
+            typed_query = input('Enter your query: ')
+
+        spoken_query = captureAudio(r)
+
+        if typed_query:
+            query = typed_query
+            print(f"Your prompt: {query}")
+        elif spoken_query:
+            query = spoken_query
+            print(f"Your prompt: {query}")
+
         if query != '/exit':
             llm_response = query_chain(query)
             if args.save:
@@ -86,5 +114,9 @@ if __name__ == "__main__":
                     json.dump(conversation_rec, f , indent=4)
         else:   
             break
-    
+
+        typed_query = None
+        spoken_query = None
+        time.sleep(0.1) 
+            
 

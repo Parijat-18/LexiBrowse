@@ -7,3 +7,5 @@ chromadb
 elevenlabs
 ffmpeg-python
 python-dotenv
+SpeechRecognition
+PyAudio
