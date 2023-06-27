@@ -81,10 +81,10 @@ if __name__ == "__main__":
                 print(f"document: {source.metadata['source']} , Page Number: {source.metadata['page']}")
             if args.nottp == True:
                 Speech(llm_response['result'])
+            if args.save:
+                with open('conversation.json', 'w') as f:
+                    json.dump(conversation_rec, f , indent=4)
         else:   
             break
     
-    if args.save:
-        with open('conversation.json', 'w') as f:
-            json.dump(conversation_rec, f , indent=4)
 
