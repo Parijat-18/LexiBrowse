@@ -26,6 +26,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     args_dict = vars(args)
+    load_dotenv(".env")
+
+    if os.getenv('OPENAI_API_KEY') == 'your-openai-api-key-here':
+        print('\nWARNING: OpenAI API Key missing. Please add it to the .env file and rerun the setup')
+    else:
+        print('\nopenai api key setup successful!')
+
+    if os.getenv('ELEVEN_API_KEY') == 'your-elevenlabs-api-key-here':
+        print('\nWARNING: Eleven Labs API Key missing. Please add it to the .env file and rerun the setup\n')
+    else:
+        print('\nEleven Labs api key setup successful! API KEY\n')
 
     with open('config.json', 'w') as f:
         json.dump(args_dict, f , indent=4)
@@ -51,14 +62,9 @@ if __name__ == '__main__':
     except Exception as e:
         done = True
         print(f"An error occurred while generating the embeddings: {e}")
-    
 
     t.join()
-    load_dotenv()
-    if os.getenv('OPENAI_API_KEY') == 'your-api-key-here':
-        print('\nWARNING: OpenAI API Key missing. Please add it to the .env file and rerun the setup')
-    else:
-        print('\nopenai api key setup successful!')
-    print('Setup complete! Now run "python main.py" to initialize Lexi.')
+
+    print('\nSetup complete! Now run "python main.py" to initialize Lexi.')
 
 

@@ -4,13 +4,15 @@ from langchain.chains import RetrievalQA
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain import PromptTemplate
+from dotenv import load_dotenv
+from textToSpeech import Speech
 import json
 import os
 import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
-# parser.add_argument('--chunk_overlap' , type=int, default=config.get('chunk_overlap', 100), help='The overlap of the chunks to be used for the embedding')
+parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
 
 if __name__ == "__main__":
 
@@ -46,6 +48,7 @@ if __name__ == "__main__":
         template=template,
     )
     args = parser.parse_args()
+    load_dotenv()
     conversation_rec = []
     embedding = OpenAIEmbeddings(model=config['embedding_model'])
     openai = ChatOpenAI(temperature=0 , model=config['model'])
@@ -76,7 +79,9 @@ if __name__ == "__main__":
             print('sources: ')
             for source in llm_response['source_documents']:
                 print(f"document: {source.metadata['source']} , Page Number: {source.metadata['page']}")
-        else:
+            if args.nottp == True:
+                Speech(llm_response['result'])
+        else:   
             break
     
     if args.save:

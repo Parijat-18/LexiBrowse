@@ -4,4 +4,6 @@ gradio
 pypdf
 tiktoken
 chromadb
+elevenlabs
+ffmpeg-python
 python-dotenv

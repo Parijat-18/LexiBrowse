@@ -1,6 +1,9 @@
-# LexiBrowse - Advanced AI Document Exploration ChatBot
+README.md:
 
-Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate exploration of documents. Built with the robustness of OpenAI's GPT-3 and GPT-4 models, Lexi offers precise and high-quality responses to your queries based on the document(s) at hand.
+"
+# LexiBrowse - Advanced AI Document Exploration ChatBot with Text-to-Speech Feature
+
+Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate exploration of documents. Built with the robustness of OpenAI's GPT-3 and GPT-4 models, Lexi offers precise and high-quality responses to your queries based on the document(s) at hand. Now with the addition of Text-to-Speech feature, you can listen to Lexi's responses!
 
 ## Key Features
 
@@ -8,6 +11,7 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
 2. **Customizable Models**: You have the freedom to choose your preferred GPT and embedding models.
 3. **Persistent Memory**: Lexi employs memory persistence, leveraging previous interactions to provide more accurate and contextual answers.
 4. **Conversation Recording**: Every conversation with Lexi gets recorded in a `conversation.json` file. This feature can be instrumental in generating high-quality reports or documents, such as dissertations, research papers, and more.
+5. **Text-to-Speech Feature**: Listen to Lexi's responses with our new text-to-speech feature, powered by the Elevenlabs API. 
 
 ## Getting Started
 
@@ -15,6 +19,7 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
 
 - Python 3.x
 - Virtual environment (optional but recommended)
+- FFmpeg, FFplay and MPV installed (for the Text-to-Speech feature)
 
 ### Setup Guide
 
@@ -51,40 +56,29 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
    pip install -r requirements.txt
    ```
 
-4. **Set Up OpenAI API Key**: 
+4. **Set Up OpenAI and Elevenlabs API Key**: 
 
-   To utilize the OpenAI GPT API, you must add your OpenAI API Key. [Follow this link to create one](https://platform.openai.com/account/api-keys), and then add it to the `.env` file:
+   To utilize the OpenAI GPT and Elevenlabs API, you must add your OpenAI API Key and Elevenlabs API Key. [Follow this link to create an OpenAI API key](https://platform.openai.com/account/api-keys), and [Follow this link to create an Eleven labs API key](https://beta.elevenlabs.io/). Then add it to the `.env` file:
 
    ```env
-   OPENAI_API_KEY='your-api-key-here'
+   OPENAI_API_KEY='your-openai-api-key-here'
+   ELEVEN_API_KEY='your-elevenlabs-api-key-here'
    ```
 
-5. **Generate and Store Embeddings**: 
+5. **Installing FFmpeg, FFplay and MPV**:
 
-   Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options.
+   The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on your system. You can download FFmpeg and FFplay from the [official FFmpeg website](https://ffmpeg.org/download.html) and MPV from the [official MPV website](https://mpv.io/installation/). Make sure to add them to your system's PATH.
 
-6. **Start the Chat Interface**: 
+6. **Generate and Store Embeddings**: 
 
-   Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses.
+   Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options
 
-## Demo
+7. **Start the Chat Interface with Text-to-Speech**: 
 
-This repository includes three research papers on deep reinforcement learning for demonstration purposes. Here's how you can get started:
-
-1. Run the setup file:
+   Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses. For disabling the text-to-speech feature, use the `--nottp` flag:
 
    ```bash
-   python setup.py
+   python main.py --nottp
    ```
 
-   ![Setup image](images/setup.png)
-
-2. Start the chatbot:
-
-   ```bash
-   python main.py
-   ```
-
-   ![Chatbot image](images/main.png)
-
-For any issues or further queries, feel free to open an issue or submit a pull request. Happy exploring with LexiBrowse!
+   If the Text-to-Speech feature is enabled, you will be able to hear Lexi's responses. Make sure you've configured your desired voice in the `textToSpeech\\xi_config.json` file.
