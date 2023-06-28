@@ -60,25 +60,24 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
    ```
 5. **Installing FFmpeg, FFplay and MPV**:
 
-<<<<<<< HEAD
-   The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on your system. You can download FFmpeg and FFplay from the [official FFmpeg website](https://ffmpeg.org/download.html) and MPV from the [official MPV website](https://mpv.io/installation/). Make sure to add them to your system's PATH.
+The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on your system. You can download FFmpeg and FFplay from the [official FFmpeg website](https://ffmpeg.org/download.html) and MPV from the [official MPV website](https://mpv.io/installation/). Make sure to add them to your system's PATH.
 
 6. **Generate and Store Embeddings**:
-   =======
+   ==============================
+
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options. For using web URLs, just use the `--pdf_links` and paste the urls.
+
 
    ```
    python setup.py --pdf_links url1 url2
    ```
 7. **Start the Chat Interface**:
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options
-
-7. **Start the Chat Interface with Text-to-Speech**:
+8. **Start the Chat Interface with Text-to-Speech**:
 
    Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses. For disabling the text-to-speech feature, use the `--nottp` flag:
 
    ```bash
    python main.py --nottp
    ```
-
    If the Text-to-Speech feature is enabled, you will be able to hear Lexi's responses. Make sure you've configured your desired voice in the `textToSpeech\\xi_config.json` file.
