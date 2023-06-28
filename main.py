@@ -3,29 +3,20 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
-import speech_recognition as sr
-from speechToText import captureAudio
 from langchain import PromptTemplate
 from dotenv import load_dotenv
 from textToSpeech import Speech
+import argparse
 import json
 import os
-import msvcrt
-import time
-import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
+parser.add_argument('--savettp', action="store_true", help='Saves the streamed audio files.')
+parser.add_argument('--docs', type=int , default=6, help='Choose number of chunks to cite')
 parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
 
 if __name__ == "__main__":
-
-    def captureAudioThread(q):
-        r = sr.Recognizer()
-        while True:
-            query = captureAudio(r)
-            if query is not None:
-                q.put(query)
 
     if os.path.exists('config.json'):
         with open('config.json', 'r') as f:
@@ -61,11 +52,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     load_dotenv()
     conversation_rec = []
+    count = 1
     embedding = OpenAIEmbeddings(model=config['embedding_model'])
     openai = ChatOpenAI(temperature=0 , model=config['model'])
     vecDB = Chroma(persist_directory=config['persist_dir'] , embedding_function=embedding)
     query_chain = RetrievalQA.from_chain_type(llm=openai, 
-                                              retriever=vecDB.as_retriever(), 
+                                              retriever=vecDB.as_retriever(search_kwargs={"k":args.docs}), 
                                               return_source_documents=True,
                                               chain_type_kwargs={
                                                   "verbose":False,
@@ -75,48 +67,39 @@ if __name__ == "__main__":
                                                       input_key="question")
                                               }
                                         )
-    r = sr.Recognizer()
 
     print('\033[92m' + "Greetings! Welcome to LexiBrowse. I am your AI-powered companion for swift and precise document exploration." + '\033[0m')
 
-    typed_query = None
-    spoken_query = None
-
     while True:
-        if msvcrt.kbhit():
-            typed_query = input('Enter your query: ')
 
-        spoken_query = captureAudio(r)
-
-        if typed_query:
-            query = typed_query
-            print(f"Your prompt: {query}")
-        elif spoken_query:
-            query = spoken_query
-            print(f"Your prompt: {query}")
-
+        query = input('Enter your query: ')
         if query != '/exit':
             llm_response = query_chain(query)
+            print('\033[92m' + "Lexi: " + '\033[0m' , llm_response['result'])
+            print('sources: ')
+            for source in llm_response['source_documents']:
+                print(f"document: {source.metadata['source']} , Page Number: {source.metadata['page']}")
+
             if args.save:
                 conversation = {
                     "user":query,
                     "lexi":llm_response['result']
                 }
-                conversation_rec.append(conversation)
-            print('\033[92m' + "Lexi: " + '\033[0m' , llm_response['result'])
-            print('sources: ')
-            for source in llm_response['source_documents']:
-                print(f"document: {source.metadata['source']} , Page Number: {source.metadata['page']}")
+
             if args.nottp == True:
-                Speech(llm_response['result'])
+                if args.savettp:
+                    audio_file = f"speechFiles\\audio{count}.wav"
+                    Speech(llm_response['result'] , audio_file)
+                    conversation['audio_path'] = audio_file
+                    count += 1
+                else:
+                    Speech(llm_response['result'])
+
             if args.save:
+                conversation_rec.append(conversation)
                 with open('conversation.json', 'w') as f:
                     json.dump(conversation_rec, f , indent=4)
         else:   
             break
-
-        typed_query = None
-        spoken_query = None
-        time.sleep(0.1) 
             
 
