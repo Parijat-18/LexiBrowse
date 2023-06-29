@@ -69,7 +69,7 @@ The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on yo
 
 
    ```
-   python setup.py --pdf_links url1 url2
+   python setup.py --pdf_links "url1 url2"
    ```
 7. **Start the Chat Interface**:
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options
