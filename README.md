@@ -72,12 +72,22 @@ The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on yo
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options. For using web URLs, just use the `--pdf_links` and paste the urls.
 
    ```
-   python setup.py --pdf_links url1 url2
+   python setup.py --pdf_links "url1 url2"
    ```
+<<<<<<< HEAD
 
 8. **Start the Chat Interface**:
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options
    
+=======
+7. **Start the Chat Interface**:
+   
+   Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses.  If the Text-to-Speech feature is enabled, you will be able to hear Lexi's responses. Make sure you've configured your desired voice in the `textToSpeech\\xi_config.json` file.
+   
+   ```bash
+   python main.py
+   ```
+>>>>>>> d72c9fea40fd0464fcdd5772d7dbe51b52306db7
 9. **Start the Chat Interface with Text-to-Speech**:
 
    Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses. For disabling the text-to-speech feature, use the `--nottp` flag:
@@ -85,4 +95,6 @@ The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on yo
    ```bash
    python main.py --nottp
    ```
-   If the Text-to-Speech feature is enabled, you will be able to hear Lexi's responses. Make sure you've configured your desired voice in the `textToSpeech\\xi_config.json` file.
+
+10. **Save the text to speech responses**:
+    You can also save the voice response as a wav file. To enable it use the the `--savettp` flag before executing `main.py`.
