@@ -1,9 +1,7 @@
 import speech_recognition as sr
 
-spoken_query = None  # global variable to store the spoken query
 
 def captureAudio(r):
-    global spoken_query  # tell Python we're using the global variable
 
     while True:
         with sr.Microphone() as source:
@@ -20,7 +18,7 @@ def captureAudio(r):
                         audio = r.listen(source, timeout=10, phrase_time_limit=None)
                         try:
                             query = r.recognize_google(audio)
-                            spoken_query = query  # set the global variable
+                            return query
                         except:
                             print("No query made. Deactivating!!!")
 

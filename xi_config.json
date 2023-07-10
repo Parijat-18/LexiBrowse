@@ -1,0 +1,16 @@
+{
+    "voices": [
+        "Rachel",
+        "Domi",
+        "Bella",
+        "Antoni",
+        "Elli",
+        "Josh",
+        "Arnold",
+        "Adam",
+        "Sam"
+    ],
+    "voice_id": 1,
+    "model": "eleven_monolingual_v1",
+    "stream": true
+}

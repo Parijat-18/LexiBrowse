@@ -2,3 +2,6 @@ __pycache__/
 venv/
 resources/db/
 images/
+.env
+lexibot.py
+speechToText.py

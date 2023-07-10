@@ -1,6 +1,6 @@
 {
     "input_dir": "resources\\pdf_files",
-    "pdf_links": "",
+    "pdf_links": "https://arxiv.org/pdf/2106.09685.pdf",
     "chunk_size": 1000,
     "chunk_overlap": 100,
     "persist_dir": "resources\\db",

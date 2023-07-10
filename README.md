@@ -50,7 +50,12 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
    ```bash
    pip install -r requirements.txt
    ```
-4. **Set Up OpenAI and Elevenlabs API Key**:
+4. **Copy .env to the root directory**: copy the `.env.example` file to the root directory as `.env`
+   ```bash
+   cp .env.example .env
+   ```
+
+5. **Set Up OpenAI and Elevenlabs API Key**:
 
    To utilize the OpenAI GPT and Elevenlabs API, you must add your OpenAI API Key and Elevenlabs API Key. [Follow this link to create an OpenAI API key](https://platform.openai.com/account/api-keys), and [Follow this link to create an Eleven labs API key](https://beta.elevenlabs.io/). Then add it to the `.env` file:
 
@@ -58,22 +63,22 @@ Welcome to LexiBrowse, your AI-powered personal assistant for fast and accurate 
    OPENAI_API_KEY='your-openai-api-key-here'
    ELEVEN_API_KEY='your-elevenlabs-api-key-here'
    ```
-5. **Installing FFmpeg, FFplay and MPV**:
+6. **Installing FFmpeg, FFplay and MPV**:
 
 The text-to-speech feature requires FFmpeg, FFplay and MPV to be installed on your system. You can download FFmpeg and FFplay from the [official FFmpeg website](https://ffmpeg.org/download.html) and MPV from the [official MPV website](https://mpv.io/installation/). Make sure to add them to your system's PATH.
 
-6. **Generate and Store Embeddings**:
-   ==============================
+7.**Generate and Store Embeddings**:
 
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options. For using web URLs, just use the `--pdf_links` and paste the urls.
-
 
    ```
    python setup.py --pdf_links url1 url2
    ```
-7. **Start the Chat Interface**:
+
+8. **Start the Chat Interface**:
    Run the `setup.py` file to generate embeddings. Ensure you have added documents to the `input_dir` path specified in the `config.json` file (default location: `resources\pdf_files`). You can also use `python setup.py --help` to learn more about configuration options
-8. **Start the Chat Interface with Text-to-Speech**:
+   
+9. **Start the Chat Interface with Text-to-Speech**:
 
    Execute the `main.py` file to start the chatbot. This action will initiate Lexi, who will respond to your prompts along with references to the document and page numbers that inform her responses. For disabling the text-to-speech feature, use the `--nottp` flag:
 

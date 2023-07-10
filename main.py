@@ -10,13 +10,14 @@ import argparse
 import json
 import os
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
-parser.add_argument('--savettp', action="store_true", help='Saves the streamed audio files.')
-parser.add_argument('--docs', type=int , default=6, help='Choose number of chunks to cite')
-parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
+    parser.add_argument('--savettp', action="store_true", help='Saves the streamed audio files.')
+    parser.add_argument('--docs', type=int , default=6, help='Choose number of chunks to cite')
+    parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
 
     if os.path.exists('config.json'):
         with open('config.json', 'r') as f:
@@ -51,7 +52,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     load_dotenv()
-    conversation_rec = []
     count = 1
     embedding = OpenAIEmbeddings(model=config['embedding_model'])
     openai = ChatOpenAI(temperature=0 , model=config['model'])
@@ -64,7 +64,8 @@ if __name__ == "__main__":
                                                   "prompt":prompt,
                                                   "memory": ConversationBufferMemory(
                                                       memory_key="history",
-                                                      input_key="question")
+                                                      input_key="question",
+                                                      max_token_limit=100)
                                               }
                                         )
 
@@ -96,10 +97,16 @@ if __name__ == "__main__":
                     Speech(llm_response['result'])
 
             if args.save:
+                if os.path.exists('config.json'):
+                    with open('conversation.json', 'r') as f:
+                        conversation_rec = json.load(f)
+
                 conversation_rec.append(conversation)
+
                 with open('conversation.json', 'w') as f:
-                    json.dump(conversation_rec, f , indent=4)
+                    json.dump(conversation_rec, f, indent=4)
         else:   
             break
+
             
 

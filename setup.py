@@ -15,7 +15,7 @@ else:
 
 parser = argparse.ArgumentParser(description='Custom split and embeddings for setting up the documents for the ChromaDB')
 parser.add_argument('--input_dir', type=str, default=config.get('input_dir', 'resources\pdf_files'), help='Path to the location of your documents')
-parser.add_argument('--pdf_links', type=str, default=config.get('pdf_links', ""), help='list of link to pdf files')
+parser.add_argument('--pdf_links', type=str, default="", help='list of link to pdf files')
 parser.add_argument('--chunk_size', type=int, default=config.get('chunk_size', 1000), help='The size of the chunks to be used for the embedding')
 parser.add_argument('--chunk_overlap' , type=int, default=config.get('chunk_overlap', 100), help='The overlap of the chunks to be used for the embedding')
 parser.add_argument('--persist_dir', type=str, default=config.get('persist_dir', 'resources\db'), help='Path to the location of your persisted Chroma database')
