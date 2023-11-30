@@ -4,6 +4,12 @@ import uuid
 import json
 import os
 
+if os.path.exists('xi_config.json'):
+    with open('xi_config.json', 'r') as f:
+        config = json.load(f)
+else:
+    raise FileNotFoundError('The configuration file "config.json" does not exist.')
+
 
 def Speech(text , audio_file=None):
     audio = generate(
@@ -22,12 +28,6 @@ def Speech(text , audio_file=None):
 
 
 if __name__ == '__main__':
-
-    if os.path.exists('xi_config.json'):
-        with open('xi_config.json', 'r') as f:
-            config = json.load(f)
-    else:
-        raise FileNotFoundError('The configuration file "config.json" does not exist.')
     
     
     parser = argparse.ArgumentParser(description="configuring elevenlabs text to speech api") 

@@ -6,16 +6,18 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 def fileDirToDoc(input_dir='resources\pdf_files'):
-    if os.path.exists(input_dir):
+    if os.path.exists(input_dir) and len(os.listdir(input_dir)) > 0:
         loader = PyPDFDirectoryLoader(input_dir , glob='./*.pdf')
         doc = loader.load()
         return doc
     else:
         print('Input Path Doesnt exist')
+        return []
 
 def linkToDoc(pdf_links):
     doc = []
     for pdf_link in pdf_links:
+        print(pdf_link)
         if pdf_link != '':
             try:
                 loader = PyPDFLoader(pdf_link)

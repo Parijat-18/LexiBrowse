@@ -3,25 +3,29 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
-from langchain import PromptTemplate
+from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from textToSpeech import Speech
+from speechToText import start_recording
+import openai
 import argparse
 import json
 import os
 
 
 if __name__ == "__main__":
-    
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
-    parser.add_argument('--savettp', action="store_true", help='Saves the streamed audio files.')
-    parser.add_argument('--docs', type=int , default=6, help='Choose number of chunks to cite')
-    parser.add_argument('--nottp', action="store_false", help='Disables text to speech')
-
     if os.path.exists('config.json'):
         with open('config.json', 'r') as f:
             config = json.load(f)
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--save', type=bool, default=True, help='Saves the entire conversation in a json format.')
+    parser.add_argument('--persist_dir', type=str, default=config['persist_dir'], help='Path to the location of your persisted Chroma database')
+    parser.add_argument('--savetts', action="store_true", help='Saves the streamed audio files.')
+    parser.add_argument('--docs', type=int , default=6, help='Choose number of chunks to cite')
+    parser.add_argument('--notts', action="store_true", help='Disables text to speech')
+    parser.add_argument('--model', type=str, default=config['model'], help='Select the model from OpenAI API')
+
     
     template = """
     In order to generate an accurate and context-aware response, please consider the following sections:
@@ -54,27 +58,31 @@ if __name__ == "__main__":
     load_dotenv()
     count = 1
     embedding = OpenAIEmbeddings(model=config['embedding_model'])
-    openai = ChatOpenAI(temperature=0 , model=config['model'])
-    vecDB = Chroma(persist_directory=config['persist_dir'] , embedding_function=embedding)
-    query_chain = RetrievalQA.from_chain_type(llm=openai, 
+    llm = ChatOpenAI(temperature=0.2 , model=args.model)
+    vecDB = Chroma(persist_directory=args.persist_dir , embedding_function=embedding)
+    query_chain = RetrievalQA.from_chain_type(llm=llm,
                                               retriever=vecDB.as_retriever(search_kwargs={"k":args.docs}), 
                                               return_source_documents=True,
                                               chain_type_kwargs={
-                                                  "verbose":False,
                                                   "prompt":prompt,
                                                   "memory": ConversationBufferMemory(
                                                       memory_key="history",
                                                       input_key="question",
-                                                      max_token_limit=100)
+                                                      max_token_limit=1000)
                                               }
                                         )
 
     print('\033[92m' + "Greetings! Welcome to LexiBrowse. I am your AI-powered companion for swift and precise document exploration." + '\033[0m')
 
     while True:
-
-        query = input('Enter your query: ')
-        if query != '/exit':
+        
+        if args.notts == False:
+            print("To speak to lexi press ctrl + alt + l and ask your question, after which press s")
+            query = start_recording()
+            print(f'Your Query: {query}')
+        else:
+            query = input('Enter your query: ')
+        if query != 'stop':
             llm_response = query_chain(query)
             print('\033[92m' + "Lexi: " + '\033[0m' , llm_response['result'])
             print('sources: ')
@@ -87,8 +95,8 @@ if __name__ == "__main__":
                     "lexi":llm_response['result']
                 }
 
-            if args.nottp == True:
-                if args.savettp:
+            if args.notts == False:
+                if args.savetts:
                     audio_file = f"speechFiles\\audio{count}.wav"
                     Speech(llm_response['result'] , audio_file)
                     conversation['audio_path'] = audio_file

@@ -1,9 +1,9 @@
 {
     "input_dir": "resources\\pdf_files",
-    "pdf_links": "https://arxiv.org/pdf/2106.09685.pdf",
+    "pdf_links": "",
     "chunk_size": 1000,
     "chunk_overlap": 100,
-    "persist_dir": "resources\\db",
+    "persist_dir": "resources\\hrm_db",
     "embedding_model": "text-embedding-ada-002",
-    "model": "gpt-3.5-turbo"
+    "model": "gpt-4"
 }

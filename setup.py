@@ -53,6 +53,7 @@ if __name__ == '__main__':
     t = threading.Thread(target= animate_process, args=('Generating embeddings',))
     t.start()
     try:
+        doc = []
         doc = fileDirToDoc(input_dir = args.input_dir)
         doc += linkToDoc(pdf_links= args.pdf_links.split(' '))
         texts = docToChunks(doc , chunk_size= args.chunk_size ,  chunk_overlap= args.chunk_overlap)
